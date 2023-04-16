@@ -6,7 +6,7 @@ use reqwest;
 fn spawn_app() -> u16 {
     let listener = TcpListener::bind("127.0.0.1:0").expect("Cannot start listener");
     let port = listener.local_addr().unwrap().port();
-    let server = actix_blog::run(listener).expect("Cannot start server");
+    let server = actix_blog::startup::run(listener).expect("Cannot start server");
 
     let _ = actix_rt::spawn(server);
 
@@ -38,7 +38,6 @@ async fn create_blog_returns_200_for_valid_form_data() {
         ("author", "genuine"),
         ("title", "Test blog"),
         ("content", "test body"),
-        ("created_at", &Utc::now().to_string()),
     ];
 
     let response = client
